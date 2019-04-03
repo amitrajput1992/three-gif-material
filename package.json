@@ -1,0 +1,61 @@
+{
+  "name": "three-gif-material",
+  "version": "1.0.0",
+  "description": "Gif material for three js objects",
+  "main": "lib/index.js",
+  "module": "src/index.js",
+  "repository": "https://github.com/amitrajput1992/three-gif-material.git",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "prettier": "prettier --write --config .prettierrc.json {src,defs}/**/**/*.{js,jsx,css,scss}",
+    "prettier-dr": "prettier --debug-check --config .prettierrc.json {src,defs}/**/**/*.{js,jsx,css,scss}",
+    "bundle": "rm -rf lib; yarn babel src --out-dir lib/ ",
+    "basetag": "yarn version --patch && git push --tags && git push --set-upstream origin master && echo \"Successfully released version $npm_package_version!\"",
+    "p": "yarn publish --access public",
+    "lint": "eslint ./src "
+  },
+  "keywords": [
+    "three gif",
+    "gif",
+    "threejs",
+    "gif material",
+    "threejs material"
+  ],
+  "author": {
+    "name": "Amit Rajput",
+    "email": "amitrajput123.ar@gmail.com",
+    "url": "https://github.com/amitrajput1992"
+  },
+  "bugs": {
+    "url": "https://github.com/amitrajput1992/three-gif-material/issues"
+  },
+  "homepage": "https://github.com/amitrajput1992/three-gif-material#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-decorators": "^7.4.0",
+    "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+    "@babel/plugin-proposal-function-sent": "^7.2.0",
+    "@babel/plugin-proposal-json-strings": "^7.2.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
+    "@babel/plugin-proposal-throw-expressions": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-syntax-import-meta": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "detect-circular-deps": "^1.3.0",
+    "eslint": "^5.13.0",
+    "eslint-plugin-flowtype": "^3.2.1",
+    "flow-bin": "^0.95.1",
+    "prettier": "^1.16.4",
+    "three": "^0.103.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.4.2"
+  }
+}

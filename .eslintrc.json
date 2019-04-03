@@ -1,0 +1,42 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+    "flowtype",
+    "react"
+  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:flowtype/recommended"],
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "impliedStrict": true,
+      "modules": true,
+      "jsx": true
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "16.0"
+      // React version
+    }
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "rules": {
+    "no-unused-vars": [1, {"varsIgnorePattern": "(^_|log)", "args": "all", "argsIgnorePattern": "(^_|^req$|^res$|^next$)"}],
+    "no-console": 0,
+    "no-constant-condition": 0,
+    "semi": ["error", "always"],
+    "no-class-assign": 0,
+    "flowtype/space-after-type-colon": [
+      2,
+      "always",
+      {"allowLineBreak": true}
+    ],
+    "flowtype/no-types-missing-file-annotation": 0
+  }
+}

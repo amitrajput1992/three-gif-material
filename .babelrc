@@ -1,0 +1,18 @@
+{
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": false }],
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-function-sent",
+    "@babel/plugin-syntax-import-meta"
+  ],
+  "presets": [
+    "@babel/preset-flow",
+    ["@babel/preset-env",
+      {
+        "targets": { "browsers": [">0.25%", "not ie 11", "not op_mini all"] }
+      }
+    ]
+  ]
+}

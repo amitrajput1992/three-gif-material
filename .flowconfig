@@ -1,0 +1,18 @@
+[ignore]
+
+[include]
+
+[libs]
+defs/
+
+[lints]
+
+[options]
+module.name_mapper='^\(.*\)' -> '<PROJECT_ROOT>/\1'
+module.file_ext=.js
+module.file_ext=.json
+module.file_ext=.jsx
+module.ignore_non_literal_requires=true
+
+
+[strict]
