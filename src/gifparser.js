@@ -11,7 +11,6 @@ const gifparser = (gif) => {
     let delayTimes = [];
     let loadCnt = 0;
     let graphicControl = null;
-    let imageData = null;
     let frames = [];
     let loopCnt = 0;
     if (gif[0] === 0x47 && gif[1] === 0x49 && gif[2] === 0x46 && // 'GIF'
@@ -62,7 +61,7 @@ const gifparser = (gif) => {
       let loadImg = function () {
         for (let i = 0; i < frames.length; i++) {
           let img = new Image();
-          img.onload = function (e, i) {
+          img.onload = function (_e, i) {
             if (i === 0) {
               cnv.width = img.width;
               cnv.height = img.height;
@@ -79,9 +78,9 @@ const gifparser = (gif) => {
           img.disposalMethod = frames[i].disposalMethod;
         }
       };
-      let imageFix = function (i) {
+      let imageFix = function () {
         let img = new Image();
-        img.onload = function (e, i) {
+        img.onload = function (_e, i) {
           loadCnt++;
           frames[i] = this;
           if (loadCnt === frames.length) {

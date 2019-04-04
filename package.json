@@ -1,6 +1,6 @@
 {
   "name": "three-gif-material",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Gif material for three js objects",
   "main": "lib/index.js",
   "module": "src/index.js",
@@ -10,7 +10,8 @@
   "scripts": {
     "prettier": "prettier --write --config .prettierrc.json {src,defs}/**/**/*.{js,jsx,css,scss}",
     "prettier-dr": "prettier --debug-check --config .prettierrc.json {src,defs}/**/**/*.{js,jsx,css,scss}",
-    "bundle": "rm -rf lib; yarn babel src --out-dir lib/ ",
+    "del-lib": "rm -rf lib;",
+    "bundle": "yarn babel src --out-dir lib/ ",
     "basetag": "yarn version --patch && git push --tags && git push --set-upstream origin master && echo \"Successfully released version $npm_package_version!\"",
     "p": "yarn publish --access public",
     "lint": "eslint ./src "
@@ -53,7 +54,7 @@
     "eslint-plugin-flowtype": "^3.2.1",
     "flow-bin": "^0.95.1",
     "prettier": "^1.16.4",
-    "three": "^0.103.0"
+    "three": "^0.101.1"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2"
