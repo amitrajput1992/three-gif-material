@@ -3,26 +3,19 @@
  * @flow
  */
 /* globals __DEV__ */
-import {
-  MeshBasicMaterial,
-  Texture,
-  ClampToEdgeWrapping,
-  NearestFilter,
-  Math,
-  DoubleSide
-} from 'three';
-import gifparser from "./gifparser";
+import { MeshBasicMaterial, Texture, ClampToEdgeWrapping, NearestFilter, Math, DoubleSide } from 'three';
+import gifparser from './gifparser';
 
 type Params = {
   url: string,
-  autoplay: boolean
+  autoplay: boolean,
 };
 
 type Frame = {
   disposalMethod: number,
   blob: Blob,
   width: number,
-  height: number
+  height: number,
 };
 
 type GifData = {
@@ -64,13 +57,13 @@ class GifMaterial extends MeshBasicMaterial {
     this._texture.wrapS = ClampToEdgeWrapping;
     this._texture.wrapT = ClampToEdgeWrapping;
     this._texture.minFilter = NearestFilter;
-    this.setValues({map: this._texture, transparent: true, visible: true, side: DoubleSide});
+    this.setValues({ map: this._texture, transparent: true, visible: true, side: DoubleSide });
   }
 
   static isGif = (buf: Uint8Array) => {
-    const arr = (buf).subarray(0, 4);
+    const arr = buf.subarray(0, 4);
     let header = '';
-    for(let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
       header += arr[i].toString(16);
     }
     return header === '47494638';
@@ -85,27 +78,27 @@ class GifMaterial extends MeshBasicMaterial {
    * @return {Promise<void>}
    * @private
    */
-  setParams = async ({url, autoplay}: Params) => {
-    if(__DEV__) {
+  setParams = async ({ url, autoplay }: Params) => {
+    if (__DEV__) {
       console.log('Initializing material');
     }
-    if(!url) {
+    if (!url) {
       return;
     }
     try {
       let gifData;
       // check if we have already cached the data
-      if(this._gifData[url]) {
+      if (this._gifData[url]) {
         gifData = this._gifData[url];
       } else {
         gifData = await this._getGifData(url);
       }
-      if(__DEV__) {
+      if (__DEV__) {
         console.log(gifData);
       }
       // override with what we have in cache
       this._gifData[url] = gifData;
-      this. _setTexture(gifData);
+      this._setTexture(gifData);
       autoplay && this.play();
     } catch (e) {
       console.error(e);
@@ -126,7 +119,7 @@ class GifMaterial extends MeshBasicMaterial {
       xhr.responseType = 'arraybuffer';
       xhr.onload = function() {
         const uint8Arr = new Uint8Array(this.response);
-        if(!GifMaterial.isGif(uint8Arr)) {
+        if (!GifMaterial.isGif(uint8Arr)) {
           reject('Not a gif');
         }
         resolve(uint8Arr);
@@ -143,16 +136,16 @@ class GifMaterial extends MeshBasicMaterial {
    */
   _getGifData = async (url: string): Promise<GifData> => {
     const uint8Array = await this._getUnit8Array(url);
-    const {delayTimes, loopCnt, frames} = await gifparser(uint8Array);
-    return {delayTimes, loopCnt, frames, timestamp: Date.now()};
+    const { delayTimes, loopCnt, frames } = await gifparser(uint8Array);
+    return { delayTimes, loopCnt, frames, timestamp: Date.now() };
   };
 
-  _setTexture = ({delayTimes, loopCnt, frames}: GifData) => {
-    if(__DEV__) {
+  _setTexture = ({ delayTimes, loopCnt, frames }: GifData) => {
+    if (__DEV__) {
       console.log('setting texture');
     }
     this._delayTimes = delayTimes;
-    loopCnt? (this._loopCnt = loopCnt): (this._infinity = true);
+    loopCnt ? (this._loopCnt = loopCnt) : (this._infinity = true);
     this._frames = frames;
     this._frameCnt = delayTimes.length;
     this._startTime = Date.now();
@@ -161,7 +154,7 @@ class GifMaterial extends MeshBasicMaterial {
     this._cnv.width = this._width;
     this._cnv.height = this._height;
 
-    if(__DEV__) {
+    if (__DEV__) {
       console.log('width: ', this._width, 'height:', this._height);
     }
 
@@ -178,11 +171,11 @@ class GifMaterial extends MeshBasicMaterial {
     this._nextFrameTime = this._delayTimes[this._frameIdx++];
 
     // reached beyond last frame here
-    if(this._nextFrameTime === undefined) {
+    if (this._nextFrameTime === undefined) {
       this._nextFrameTime = 0;
     }
 
-    if(this._frameIdx > this._frameCnt) {
+    if (this._frameIdx > this._frameCnt) {
       this._frameIdx = 0;
     }
 
@@ -190,17 +183,17 @@ class GifMaterial extends MeshBasicMaterial {
   };
 
   _draw = () => {
-    if(this._frameIdx !== 0) {
+    if (this._frameIdx !== 0) {
       const lastFrame = this._frames[this._frameIdx - 1];
-      if(lastFrame && (lastFrame.disposalMethod === 8 || lastFrame.disposalMethod === 9)) {
+      if (lastFrame && (lastFrame.disposalMethod === 8 || lastFrame.disposalMethod === 9)) {
         this._clearCanvas();
       }
     } else {
       this._clearCanvas();
     }
     const actualFrame = this._frames[this._frameIdx];
-    if(typeof actualFrame !== 'undefined') {
-      if(__DEV__) {
+    if (typeof actualFrame !== 'undefined') {
+      if (__DEV__) {
         // console.log('Drawing frame', this._frameIdx, actualFrame);
       }
       this._ctx.drawImage(actualFrame, 0, 0, this._width, this._height);
