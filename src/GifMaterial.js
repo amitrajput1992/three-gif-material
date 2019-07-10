@@ -47,7 +47,6 @@ class GifMaterial extends MeshBasicMaterial {
   _nextFrameTime: number = 0;
   _frameIdx: number = 0;
   _delayTimes: number[] = [];
-
   _isPaused: boolean = true;
   _gifData: Object = {};
 
@@ -162,6 +161,10 @@ class GifMaterial extends MeshBasicMaterial {
     this._cnv.width = this._width;
     this._cnv.height = this._height;
 
+    if(__DEV__) {
+      console.log('width: ', this._width, 'height:', this._height);
+    }
+
     this._draw();
   };
 
@@ -171,13 +174,19 @@ class GifMaterial extends MeshBasicMaterial {
   _nextFrame = () => {
     this._draw();
 
-    while((Date.now() - this._startTime) >= this._nextFrameTime) {
-      this._nextFrameTime += this._delayTimes[this._frameIdx++];
-      if((this._infinity || this._loopCnt) && this._frameCnt <= this._frameIdx) {
-        // go back to 1st frame
-        this._frameIdx = 0;
-      }
+    // create the nextFrameTime here
+    this._nextFrameTime = this._delayTimes[this._frameIdx++];
+
+    // reached beyond last frame here
+    if(this._nextFrameTime === undefined) {
+      this._nextFrameTime = 0;
     }
+
+    if(this._frameIdx > this._frameCnt) {
+      this._frameIdx = 0;
+    }
+
+    this._startTime += this._nextFrameTime;
   };
 
   _draw = () => {

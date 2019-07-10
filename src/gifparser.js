@@ -6,10 +6,9 @@
  */
 
 const gifparser = (gif) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     let pos = 0;
     let delayTimes = [];
-    let loadCnt = 0;
     let graphicControl = null;
     let frames = [];
     let loopCnt = 0;
@@ -56,44 +55,23 @@ const gifparser = (gif) => {
     } else {
       reject('parseGIF: no GIF89a');
     }
-    if (frames.length) {
-      let cnv = document.createElement('canvas');
-      let loadImg = function () {
-        for (let i = 0; i < frames.length; i++) {
-          let img = new Image();
-          img.onload = function (_e, i) {
-            if (i === 0) {
-              cnv.width = img.width;
-              cnv.height = img.height;
-            }
-            loadCnt++;
-            frames[i] = this;
-            if (loadCnt === frames.length) {
-              loadCnt = 0;
-              imageFix(1);
-            }
-          }.bind(img, null, i);
-          // Link html image tag with the extracted GIF Frame
-          img.src = frames[i].blob;
-          img.disposalMethod = frames[i].disposalMethod;
-        }
-      };
-      let imageFix = function () {
-        let img = new Image();
-        img.onload = function (_e, i) {
-          loadCnt++;
-          frames[i] = this;
-          if (loadCnt === frames.length) {
-            cnv = null;
-            resolve({delayTimes, loopCnt, frames});
-          } else {
-            imageFix(++i);
+
+    const imgFrames = await frames.reduce((promiseChain, currentTask) => {
+      return promiseChain.then(chainResults => {
+        const img = new Image();
+        const loadPromise = new Promise(resolve => {
+          img.onload = function(e) {
+            resolve(img);
           }
-        }.bind(img);
-        img.src = cnv.toDataURL('image/gif');
-      };
-      loadImg();
-    }
+        });
+        img.src = currentTask.blob;
+        img.disposalMethod = currentTask.disposalMethod;
+        return loadPromise.then(currentResult =>
+          [...chainResults, currentResult]
+        );
+      });
+    }, Promise.resolve([]));
+    resolve({delayTimes, loopCnt, frames: imgFrames});
   });
 };
 
