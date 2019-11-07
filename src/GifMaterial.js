@@ -3,7 +3,7 @@
  * @flow
  */
 /* globals __DEV__ */
-import { MeshBasicMaterial, Texture, ClampToEdgeWrapping, NearestFilter, Math, DoubleSide } from 'three';
+import { MeshBasicMaterial, Texture, ClampToEdgeWrapping, NearestFilter, DoubleSide } from 'three';
 import gifparser from './gifparser';
 
 type Params = {
