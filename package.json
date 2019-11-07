@@ -53,10 +53,10 @@
     "eslint": "^5.13.0",
     "eslint-plugin-flowtype": "^3.2.1",
     "flow-bin": "^0.95.1",
-    "prettier": "^1.16.4"
+    "prettier": "^1.16.4",
+    "three": "^0.101.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.2",
-    "three": "^0.101.1"
+    "@babel/runtime": "^7.4.2"
   }
 }

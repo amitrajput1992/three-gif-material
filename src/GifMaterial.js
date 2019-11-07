@@ -149,8 +149,8 @@ class GifMaterial extends MeshBasicMaterial {
     this._frames = frames;
     this._frameCnt = delayTimes.length;
     this._startTime = Date.now();
-    this._width = Math.floorPowerOfTwo(frames[0].width);
-    this._height = Math.floorPowerOfTwo(frames[0].height);
+    this._width = floorPowerOfTwo(frames[0].width);
+    this._height = floorPowerOfTwo(frames[0].height);
     this._cnv.width = this._width;
     this._cnv.height = this._height;
 
@@ -247,6 +247,10 @@ class GifMaterial extends MeshBasicMaterial {
     this._texture.dispose();
     this._texture = null;
   }
+}
+
+function floorPowerOfTwo(value) {
+  return Math.pow( 2, Math.floor( Math.log( value ) / Math.LN2 ) );
 }
 
 export default GifMaterial;
