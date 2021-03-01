@@ -54,7 +54,7 @@
     "eslint-plugin-flowtype": "^3.2.1",
     "flow-bin": "^0.95.1",
     "prettier": "^1.16.4",
-    "three": "^0.101.1"
+    "three": "^0.125.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.4.2"
